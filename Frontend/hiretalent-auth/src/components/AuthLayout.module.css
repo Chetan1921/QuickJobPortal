@@ -1,0 +1,226 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: var(--navy);
+}
+
+.shell {
+  display: flex;
+  width: 100%;
+  max-width: 1080px;
+  min-height: 640px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--border);
+}
+
+/* ── LEFT PANEL ── */
+.leftPanel {
+  width: 42%;
+  background: var(--panel);
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.leftPanel::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -80px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(59,130,246,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.leftPanel::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -60px;
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(6,182,212,.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Brand */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.brandIcon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brandName {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: -0.4px;
+  color: var(--off-white);
+}
+
+.brandName span {
+  color: var(--cyan);
+}
+
+/* Panel content */
+.panelContent {
+  position: relative;
+  z-index: 1;
+}
+
+.headline {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.6px;
+  margin-bottom: 12px;
+  color: var(--off-white);
+}
+
+/* em used for highlight color via dangerouslySetInnerHTML */
+.headline :global(em) {
+  font-style: normal;
+  color: var(--cyan);
+}
+
+.sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* Chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  animation: floatUp 5s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+.chipDot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  flex-shrink: 0;
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.statNum {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #fff, var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.statLabel {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  letter-spacing: 0.2px;
+}
+
+/* ── RIGHT PANEL ── */
+.rightPanel {
+  flex: 1;
+  background: var(--navy);
+  padding: 48px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.formWrap {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 780px) {
+  .page {
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .shell {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .leftPanel {
+    width: 100%;
+    padding: 28px 24px;
+    min-height: auto;
+  }
+
+  .chips {
+    display: none;
+  }
+
+  .headline {
+    font-size: 22px;
+  }
+
+  .rightPanel {
+    padding: 32px 24px;
+  }
+
+  .stats {
+    gap: 20px;
+  }
+
+  .statNum {
+    font-size: 18px;
+  }
+}
