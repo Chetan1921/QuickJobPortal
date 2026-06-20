@@ -6,8 +6,9 @@ import GetBufferFromFile from "../utils/Buffer.js";
 import axios from "axios";
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { SendMessage } from "../kafka/producer.js";
+// import { SendMessage } from "../kafka/producer.js";
 import { ForgotPasswordTemplate } from "../utils/template.js";
+import nodemailer from 'nodemailer';
 import { RedisClient } from "../index.js";
 dotenv.config();
 export const RegisterController = TryCatch(async (req, res, next) => {
@@ -116,9 +117,25 @@ export const ForgotPassword = TryCatch(async (req, res, next) => {
         html: html
     };
     // Send Reset Link to Redis Client
-    // console.log("message", message)
-    const topic = 'send-mail';
-    await SendMessage(topic, message);
+    // // console.log("message", message)
+    // const topic = 'send-mail'
+    // await SendMessage(topic, message)
+    const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.GMAIL_PASSWORD
+        }
+    });
+    await transporter.sendMail({
+        from: 'chetan.sharma200104022@gmail.com',
+        to: message.to,
+        subject: message.subject,
+        html: message.html
+    });
+    console.log("Mail Sent to ", message.to);
     return res.status(200).json({
         success: true,
         message: 'We have sent A ResetLink to Your Email',

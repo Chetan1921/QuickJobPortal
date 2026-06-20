@@ -5,7 +5,8 @@ import GetBufferFromFile from "../utils/Buffer.js";
 import axios from "axios";
 import dotenv from 'dotenv';
 import ApplicationUpdateTemplate from "../utils/Template.js";
-import { SendMessage } from "../kafka/producer.js";
+// import { SendMessage } from "../kafka/producer.js";
+import nodemailer from 'nodemailer';
 dotenv.config();
 export const CreateCompany = TryCatch(async (req, res, next) => {
     const user = req.user;
@@ -615,11 +616,28 @@ export const UpdateApplication = TryCatch(async (req, res, next) => {
         subject: "Application Update - Job Portal",
         html: ApplicationUpdateTemplate(job.title, "Hired")
     };
-    SendMessage('send-mail', message).then(() => {
-        console.log("Message Send To Kafka Queue");
-    }).catch((err) => {
-        console.log(err);
+    // SendMessage('send-mail', message).then(() => {
+    //     console.log("Message Send To Kafka Queue");
+    // }).catch((err) => {
+    //     console.log(err);
+    // })
+    // For Deployment we are sending mail without Kafka
+    const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.GMAIL_PASSWORD
+        }
     });
+    await transporter.sendMail({
+        from: 'chetan.sharma200104022@gmail.com',
+        to: message.to,
+        subject: message.subject,
+        html: message.html
+    });
+    console.log("Mail Sent to ", message.to);
     return res.status(200).json({
         message: "Application Updated",
         job: job,
