@@ -771,7 +771,7 @@ export const UpdateApplication = TryCatch(async (req: AuthenticatedRequest, res,
     const { id } = req.params;
     const [application] = await sql`SELECT * from Applications where application_id=${id}`
     if (!application) {
-        throw new ErrorHandler("Application not Found", 404);
+        throw new ErrorHandler("Application not Founds", 404);
     }
     const [job] = await sql`SELECT postedby_recruiter_id,title from Jobs where job_id=${application.job_id}`
     // console.log(job);
