@@ -9,7 +9,7 @@ export const updateProfile = (data) => userAxios.put('/api/v1/user/update/profil
 export const updateProfilePicture = (file) => {
   const formData = new FormData();
   formData.append('file', file);
-  return userAxios.put('/api/v1/user/update/Picture', formData);
+  return userAxios.put('/api/v1/user/update/picture', formData);
 };
 
 export const updateResume = (file) => {
