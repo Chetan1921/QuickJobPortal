@@ -12,8 +12,6 @@ export const updateProfilePicture = (file) => {
   return userAxios.put('/api/v1/user/update/picture', formData);
 };
 
-
-
 export const updateResume = (file) => {
   const formData = new FormData();
   formData.append('file', file);
