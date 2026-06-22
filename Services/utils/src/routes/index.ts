@@ -7,6 +7,7 @@ router.post('/upload', async (req, res) => {
         const { buffer, public_id } = req.body;
 
         // Delete old file if provided
+        
         if (public_id) {
             await cloudinary.uploader.destroy(public_id, {
                 resource_type: "raw"
