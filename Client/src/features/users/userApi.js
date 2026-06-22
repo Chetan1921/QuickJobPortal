@@ -23,3 +23,5 @@ export const updateResume = (file) => {
 export const addSkill = (skill) => userAxios.post('/api/v1/user/add/skill', { skill });
 
 export const deleteSkill = (skill) => userAxios.delete('/api/v1/user/delete/skill', { data: { skill } });
+
+
