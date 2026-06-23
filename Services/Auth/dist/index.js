@@ -2,7 +2,6 @@ import app from './app.js';
 import dotenv from 'dotenv';
 import { ConnectDB } from './utils/db.js';
 import { ErrorMiddleware } from './middleware/ErrorMiddleware.js';
-import { ProducerInit } from './kafka/producer.js';
 import { createClient } from 'redis';
 import dns from 'node:dns';
 // Force Node to prefer IPv4 over IPv6
@@ -19,7 +18,7 @@ RedisClient.connect().then(() => {
 }).catch(console.error);
 // Connect With Database
 ConnectDB();
-ProducerInit();
+// ProducerInit();
 app.use(ErrorMiddleware);
 app.listen(PORT, () => {
     console.log(`Auth Service is running on port ${PORT}`);

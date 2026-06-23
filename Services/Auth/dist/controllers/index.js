@@ -8,8 +8,8 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 // import { SendMessage } from "../kafka/producer.js";
 import { ForgotPasswordTemplate } from "../utils/template.js";
-import nodemailer from 'nodemailer';
 import { RedisClient } from "../index.js";
+import { Resend } from "resend";
 dotenv.config();
 export const RegisterController = TryCatch(async (req, res, next) => {
     console.log("Received registration request with body:", req.body);
@@ -122,24 +122,12 @@ export const ForgotPassword = TryCatch(async (req, res, next) => {
     // await SendMessage(topic, message)
     // Commented out Kafka Logic for Deployement
     console.log('Creating transporter');
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        requireTLS: true,
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.GMAIL_PASSWORD
-        }
-    });
-    console.log('Verifying SMTP');
-    await transporter.verify();
-    console.log('SMTP Verified');
-    await transporter.sendMail({
-        from: 'chetan.sharma200104022@gmail.com',
-        to: message.to,
-        subject: message.subject,
-        html: message.html
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+        from: "chetan.sharma200104022@gmail.com",
+        to: requiredUser.email,
+        subject: "RESET YOUR PASSWORD -- QuickJob",
+        html,
     });
     console.log("Mail Sent to ", message.to);
     return res.status(200).json({

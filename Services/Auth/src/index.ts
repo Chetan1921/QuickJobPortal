@@ -34,7 +34,7 @@ RedisClient.connect().then(() => {
 
 ConnectDB();
 
-ProducerInit();
+// ProducerInit();
 
 
 app.use(ErrorMiddleware);
