@@ -3,10 +3,10 @@ import { v2 as cloudinary } from 'cloudinary';
 const router = express.Router();
 router.post('/upload', async (req, res) => {
     try {
-        const { buffer, oldPublicId } = req.body;
+        const { buffer, public_id } = req.body;
         // Delete old file if provided
-        if (oldPublicId) {
-            await cloudinary.uploader.destroy(oldPublicId, {
+        if (public_id) {
+            await cloudinary.uploader.destroy(public_id, {
                 resource_type: "raw"
             });
         }

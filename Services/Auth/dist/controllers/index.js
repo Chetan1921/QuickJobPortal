@@ -113,7 +113,7 @@ export const ForgotPassword = TryCatch(async (req, res, next) => {
     });
     const message = {
         to: requiredUser.email,
-        subject: 'RESET YOUR PASSWORD --HIRETALENT',
+        subject: 'RESET YOUR PASSWORD --QuickJob',
         html: html
     };
     // Send Reset Link to Redis Client
@@ -121,7 +121,7 @@ export const ForgotPassword = TryCatch(async (req, res, next) => {
     // const topic = 'send-mail'
     // await SendMessage(topic, message)
     // Commented out Kafka Logic for Deployement
-    const transporter = nodemailer.createTransport({
+    const transporter = await nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
         secure: true,

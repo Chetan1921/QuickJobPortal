@@ -613,7 +613,7 @@ export const UpdateApplication = TryCatch(async (req, res, next) => {
     const [Applicant] = await sql `SELECT * from users where id=${updatedApplication.applicant_id}`;
     const message = {
         to: Applicant.email,
-        subject: "Application Update - Job Portal",
+        subject: "Application Update - QuickJob",
         html: ApplicationUpdateTemplate(job.title, "Hired")
     };
     // SendMessage('send-mail', message).then(() => {

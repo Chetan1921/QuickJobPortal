@@ -76,6 +76,7 @@ export const ForgotPasswordTemplate = ({ name, resetLink, }) => {
                             <p style="font-size:14px;color:#888;">
                                 Regards,<br/>
                                 Job Portal Team
+                                Chetan Sharma
                             </p>
                         </td>
                     </tr>
