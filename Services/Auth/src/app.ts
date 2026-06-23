@@ -5,14 +5,20 @@ import cors from 'cors'
 
 
 app.use(
-    cors({
-        origin: [
-            'http://localhost:5173',
-            'https://quick-job-portal.vercel.app'
-        ],
+   cors({
+        origin: function (origin, callback) {
+            if (!origin) return callback(null, true);
+
+            if (
+                origin === "http://localhost:5173" ||
+                origin.endsWith(".vercel.app")
+            ) {
+                return callback(null, true);
+            }
+
+            callback(new Error("Not allowed by CORS"));
+        },
         credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-        allowedHeaders: ['Content-Type', 'Authorization']
     })
 );
 app.use(express.json({ limit: "50mb" }));
