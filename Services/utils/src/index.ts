@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import routes from './routes/index.js';
 import cors from 'cors';
 import { v2 as cloudinary } from "cloudinary";
-import { InitConsumer } from './kafka/consumer.js';
+// import { InitConsumer } from './kafka/consumer.js';
 
 
 
@@ -15,7 +15,7 @@ cloudinary.config({
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET,
 });
-InitConsumer();
+// InitConsumer();
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
