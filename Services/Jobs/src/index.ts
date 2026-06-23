@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 5003
 
 ConnectDB();
 // Connect Kafka Producer
-ProducerInit();
+// ProducerInit();
 app.listen(PORT, () => {
     console.log(`Job Service is Listening on the Port ${PORT}`);
 })
