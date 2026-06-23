@@ -4,6 +4,9 @@ import { ConnectDB } from './utils/db.js';
 import { ErrorMiddleware } from './middleware/ErrorMiddleware.js';
 import { ProducerInit } from './kafka/producer.js';
 import { createClient } from 'redis';
+import dns from 'node:dns';
+// Force Node to prefer IPv4 over IPv6
+dns.setDefaultResultOrder('ipv4first');
 dotenv.config();
 const PORT = process.env.PORT || 5001;
 // connect With Redis Client

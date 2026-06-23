@@ -168,16 +168,24 @@ export const ForgotPassword = TryCatch(async (req, res, next) => {
     // await SendMessage(topic, message)
     // Commented out Kafka Logic for Deployement
 
+    console.log('Creating transporter');
 
-    const transporter = await nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        requireTLS: true,
         auth: {
             user: process.env.EMAIL,
             pass: process.env.GMAIL_PASSWORD
         }
-    })
+    });
+
+    console.log('Verifying SMTP');
+
+    await transporter.verify();
+
+    console.log('SMTP Verified');
 
     await transporter.sendMail({
         from: 'chetan.sharma200104022@gmail.com',
