@@ -139,10 +139,10 @@ export const UpdateProfilePicController = TryCatch(
 
         console.log("Upload URL:", uploadUrl);
         console.log("Old Public Id:", user.profile_picture_public_id);
-        console.log(
-            "Buffer Length:",
-            fileBuffer.content?.length
-        );
+        // console.log(
+        //     "Buffer Length:",
+        //     fileBuffer.content?.length
+        // );
 
         let uploadResponse;
 
@@ -162,33 +162,14 @@ export const UpdateProfilePicController = TryCatch(
                 }
             );
 
-            console.log(
-                "Upload Service Response:",
-                uploadResponse.data
-            );
+            console.log("Upload Service Response:");
 
         } catch (error: any) {
 
             console.error("Upload Service Error");
 
-            console.error(
-                "Status:",
-                error.response?.status
-            );
-
-            console.error(
-                "Response:",
-                error.response?.data
-            );
-
-            console.error(
-                "Message:",
-                error.message
-            );
 
             throw new ErrorHandler(
-                error.response?.data?.message ||
-                error.message ||
                 "Failed To Upload Profile Picture",
                 500
             );
