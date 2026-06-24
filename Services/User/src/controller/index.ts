@@ -64,45 +64,158 @@ export const UpdateUserProfileController = TryCatch(async (req: AuthenticatedReq
 
 })
 
-export const UpdateProfilePicController = TryCatch(async (req: AuthenticatedRequest, res, next) => {
-    const user = req.user;
-    if (!user) {
-        throw new ErrorHandler("Authentication is Required", 400)
-    }
-    const file = (req as any).file; // handle jobseeker registration with file if needed 
-    if (!file) {
-        throw new ErrorHandler("Image File is Required", 400);
-    }
-    console.log("user:", user);
-    const oldPublicId = user.profile_picture_public_id
-    //const fileBuffer=GetBufferFromFile(file);
-    const fileBuffer = await GetBufferFromFile(file);
-    if (!fileBuffer || !fileBuffer.content) {
-        throw new ErrorHandler("Error processing the resume file", 500);
-    }
-    const { data } = await axios.post(process.env.UPLOAD_SERVICE + '/api/v1/utils/upload',
-        {
-            buffer: fileBuffer.content,
-            public_id: oldPublicId
+// export const UpdateProfilePicController = TryCatch(async (req: AuthenticatedRequest, res, next) => {
+//     const user = req.user;
+//     if (!user) {
+//         throw new ErrorHandler("Authentication is Required", 400)
+//     }
+//     const file = (req as any).file; // handle jobseeker registration with file if needed 
+//     if (!file) {
+//         throw new ErrorHandler("Image File is Required", 400);
+//     }
+//     console.log("user:", user);
+//     const oldPublicId = user.profile_picture_public_id
+//     //const fileBuffer=GetBufferFromFile(file);
+//     const fileBuffer = await GetBufferFromFile(file);
+//     if (!fileBuffer || !fileBuffer.content) {
+//         throw new ErrorHandler("Error processing the resume file", 500);
+//     }
+//     const { data } = await axios.post(process.env.UPLOAD_SERVICE + '/api/v1/utils/upload',
+//         {
+//             buffer: fileBuffer.content,
+//             public_id: oldPublicId
 
+//         }
+//     )
+//     console.log("oldPublicId:  ", oldPublicId);
+//     const users = await UpdateProfilePicture(user.id, data.url, data.public_id);
+
+//     if (users.length === 0) {
+//         throw new ErrorHandler("Error in Updating Picture", 400);
+//     }
+//     return res.status(200).json({
+//         success: true,
+//         message: 'Profile Picture Updated Successfully',
+//         user: users[0]
+
+//     })
+
+
+// })
+
+export const UpdateProfilePicController = TryCatch(
+    async (req: AuthenticatedRequest, res, next) => {
+
+        const user = req.user;
+
+        if (!user) {
+            throw new ErrorHandler("Authentication is Required", 401);
         }
-    )
-    console.log("oldPublicId:  ", oldPublicId);
-    const users = await UpdateProfilePicture(user.id, data.url, data.public_id);
 
-    if (users.length === 0) {
-        throw new ErrorHandler("Error in Updating Picture", 400);
+        const file = (req as any).file;
+
+        if (!file) {
+            throw new ErrorHandler("Image File is Required", 400);
+        }
+
+        console.log("Updating profile picture for:", user.email);
+
+        const fileBuffer = await GetBufferFromFile(file);
+
+        if (!fileBuffer || !fileBuffer.content) {
+            throw new ErrorHandler("Error processing image file", 500);
+        }
+
+        const uploadService = process.env.UPLOAD_SERVICE;
+
+        if (!uploadService) {
+            throw new ErrorHandler(
+                "UPLOAD_SERVICE environment variable is missing",
+                500
+            );
+        }
+
+        const uploadUrl = `${uploadService}/api/v1/utils/upload`;
+
+        console.log("Upload URL:", uploadUrl);
+        console.log("Old Public Id:", user.profile_picture_public_id);
+        console.log(
+            "Buffer Length:",
+            fileBuffer.content?.length
+        );
+
+        let uploadResponse;
+
+        try {
+
+            uploadResponse = await axios.post(
+                uploadUrl,
+                {
+                    buffer: fileBuffer.content,
+                    public_id: user.profile_picture_public_id
+                },
+                {
+                    timeout: 30000,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+
+            console.log(
+                "Upload Service Response:",
+                uploadResponse.data
+            );
+
+        } catch (error: any) {
+
+            console.error("Upload Service Error");
+
+            console.error(
+                "Status:",
+                error.response?.status
+            );
+
+            console.error(
+                "Response:",
+                error.response?.data
+            );
+
+            console.error(
+                "Message:",
+                error.message
+            );
+
+            throw new ErrorHandler(
+                error.response?.data?.message ||
+                error.message ||
+                "Failed To Upload Profile Picture",
+                500
+            );
+        }
+
+        const { url, public_id } = uploadResponse.data;
+
+        const users = await UpdateProfilePicture(
+            user.id,
+            url,
+            public_id
+        );
+
+        if (users.length === 0) {
+            throw new ErrorHandler(
+                "Error Updating Profile Picture",
+                400
+            );
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile Picture Updated Successfully",
+            user: users[0]
+        });
     }
-    return res.status(200).json({
-        success: true,
-        message: 'Profile Picture Updated Successfully',
-        user: users[0]
-
-    })
-
-
-})
-
+);
 
 
 
