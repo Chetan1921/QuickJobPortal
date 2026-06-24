@@ -5,7 +5,8 @@ router.post('/upload', async (req, res) => {
     try {
 
         const { buffer, public_id, type } = req.body;
-
+        console.log(1);
+        console.log(type);
         const resourceType =
             type === "image"
                 ? "image"
@@ -16,6 +17,7 @@ router.post('/upload', async (req, res) => {
                 resource_type: resourceType
             });
         }
+        console.log(2);
 
         const cloud = await cloudinary.uploader.upload(
             buffer,
@@ -23,6 +25,7 @@ router.post('/upload', async (req, res) => {
                 resource_type: resourceType
             }
         );
+        console.log(3);
 
         return res.status(200).json({
             success: true,
