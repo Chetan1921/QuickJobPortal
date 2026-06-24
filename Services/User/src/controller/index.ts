@@ -152,7 +152,8 @@ export const UpdateProfilePicController = TryCatch(
                 uploadUrl,
                 {
                     buffer: fileBuffer.content,
-                    public_id: user.profile_picture_public_id
+                    public_id: user.profile_picture_public_id,
+                     type: "image"
                 },
                 {
                     timeout: 30000,
@@ -219,7 +220,8 @@ export const UpdateResumeController = TryCatch(async (req: AuthenticatedRequest,
     const { data } = await axios.post(process.env.UPLOAD_SERVICE + '/api/v1/utils/upload',
         {
             buffer: fileBuffer.content,
-            public_id: oldPublicId
+            public_id: oldPublicId,
+             type: "raw"
 
         }
     )
