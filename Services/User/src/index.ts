@@ -7,6 +7,7 @@ import cors from 'cors'
 
 
 
+
 app.use(cors());
 
 const port = process.env.PORT || 5002;
